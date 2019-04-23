@@ -56,3 +56,33 @@ git push
 I found rebase -i allowed be to edit the commit message but retained the previous (private) email address in the log.
 
 The commit --amend --reset-author seemed to be the easiest way to replace the offending email address.
+
+
+
+private static final int radix = 62;
+    private static final long time_offset = (long)Math.pow(radix, 6);
+
+    private static final long max_random = (long)Math.pow(radix, 5) - 1;
+
+    private static String order(Date begin) {
+        System.out.println(max_random);
+        long d = System.currentTimeMillis() - begin.getTime() + time_offset;
+
+        String time = radix(d, radix);
+        int c = 7 - time.length();
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0;i < c; i++) {
+            builder.append("0");
+        }
+
+        builder.append(time);
+
+        long num = RandomUtils.nextLong(0, max_random);
+        String numStr = radix(num, 62);
+        c = 5 - numStr.length();
+        for(int i = 0;i < c; i++) {
+            builder.append("0");
+        }
+        builder.append(numStr);
+        return builder.toString();
+    }
